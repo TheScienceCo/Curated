@@ -42,3 +42,9 @@ class LlmError(AppError):
 class ConfigurationError(AppError):
     status_code = 500
     code = "configuration_error"
+
+
+class ExternalServiceError(AppError):
+    """Raised when an external service (e.g., Apify) fails."""
+    status_code = 502
+    code = "external_service_error"

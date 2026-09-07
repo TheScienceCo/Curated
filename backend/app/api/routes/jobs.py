@@ -4,19 +4,22 @@ from __future__ import annotations
 
 from typing import Any
 
-from fastapi import APIRouter, Depends, Query, Response
+from fastapi import APIRouter, Depends, HTTPException, Query, Response
 from sqlalchemy import desc
 from sqlalchemy.orm import Session
 
 from app.api.deps import db_session, llm_provider
+from app.core.config import get_settings
 from app.core.enums import MessageStatus
-from app.core.errors import NotFoundError
+from app.core.errors import ExternalServiceError, NotFoundError
 from app.core.logging import get_logger
 from app.db.models import JobOpportunity, OpportunityScore, RecruiterMessage
 from app.llm.base import LlmProvider
 from app.schemas.api import (
     AnalyzeRequest,
     AnalyzeResponse,
+    ClearanceJobsImportResponse,
+    ClearanceJobsKeywordsResponse,
     DraftRequest,
     DraftResponse,
     JobCreate,
@@ -32,6 +35,10 @@ from app.services.analysis import (
     config_for,
     get_active_candidate,
     persist_score,
+)
+from app.services.clearancejobs_scraper import (
+    generate_keywords,
+    scrape_clearancejobs,
 )
 from app.services.missing_info import detect_missing_information
 from app.services.response_draft import generate_response_draft
@@ -341,3 +348,47 @@ def score_history(job_id: str, db: Session = Depends(db_session)) -> list[Opport
         .order_by(desc(OpportunityScore.generated_at))
         .all()
     )
+
+
+@router.get("/clearancejobs-keywords", response_model=ClearanceJobsKeywordsResponse)
+def get_clearancejobs_keywords(
+    candidate_id: str | None = Query(default=None),
+    db: Session = Depends(db_session),
+) -> ClearanceJobsKeywordsResponse:
+    """Get auto-generated keywords for ClearanceJobs import."""
+    candidate = get_active_candidate(db, candidate_id)
+    keywords = generate_keywords(candidate)
+    return ClearanceJobsKeywordsResponse(keywords=keywords)
+
+
+@router.post("/import-clearancejobs", response_model=ClearanceJobsImportResponse)
+def import_clearancejobs(
+    candidate_id: str | None = Query(default=None),
+    keyword_override: str | None = Query(default=None),
+    db: Session = Depends(db_session),
+) -> ClearanceJobsImportResponse:
+    """Scrape ClearanceJobs and import matching opportunities."""
+    settings = get_settings()
+    if not settings.apify_api_token:
+        raise HTTPException(
+            status_code=400,
+            detail="APIFY_API_TOKEN not configured"
+        )
+
+    candidate = get_active_candidate(db, candidate_id)
+    keywords = keyword_override or generate_keywords(candidate)
+
+    if not keywords:
+        raise HTTPException(
+            status_code=400,
+            detail="No keywords available. Please set target_roles or technical_skills."
+        )
+
+    try:
+        saved_jobs, stats = scrape_clearancejobs(
+            db, candidate.id, keywords, settings.apify_api_token
+        )
+        return ClearanceJobsImportResponse(**stats)
+    except ExternalServiceError as e:
+        logger.error(f"ClearanceJobs import failed: {e}")
+        raise HTTPException(status_code=502, detail=str(e)) from e

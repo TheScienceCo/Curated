@@ -43,6 +43,9 @@ class Settings(BaseSettings):
 
     embeddings_enabled: bool = False
 
+    # External services ---------------------------------------------------
+    apify_api_token: str | None = None
+
     @field_validator("llm_provider", mode="before")
     @classmethod
     def _normalize_provider(cls, value: object) -> object:

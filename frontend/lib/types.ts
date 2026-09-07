@@ -364,3 +364,15 @@ export interface EquityAnalysis {
   scenarios: EquityScenario[];
   disclaimer: string;
 }
+
+export interface ClearanceJobsKeywords {
+  keywords: string;
+  source: string;
+}
+
+export interface ClearanceJobsImportResult {
+  saved: number;
+  below_threshold: number;
+  duplicates_skipped: number;
+  total_results: number;
+}

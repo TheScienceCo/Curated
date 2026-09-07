@@ -445,4 +445,18 @@ class ErrorResponse(BaseModel):
     error: dict[str, Any]
 
 
+class ClearanceJobsKeywordsResponse(BaseModel):
+    """Auto-generated search keywords for ClearanceJobs import."""
+    keywords: str
+    source: str = "target_roles and technical_skills"
+
+
+class ClearanceJobsImportResponse(BaseModel):
+    """Results from ClearanceJobs scraper import."""
+    saved: int
+    below_threshold: int
+    duplicates_skipped: int
+    total_results: int
+
+
 __all__ = [name for name in dir() if name[0].isupper()]

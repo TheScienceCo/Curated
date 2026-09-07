@@ -9,6 +9,8 @@
 import type {
   AnalyzeResponse,
   CandidateProfile,
+  ClearanceJobsImportResult,
+  ClearanceJobsKeywords,
   DashboardResponse,
   Draft,
   DraftTone,
@@ -165,4 +167,15 @@ export const api = {
     strike_price?: number | null;
     shares?: number | null;
   }) => apiFetch<EquityAnalysis>("/api/equity/calculate", { method: "POST", body }),
+
+  clearanceJobsKeywords: () => apiFetch<ClearanceJobsKeywords>("/api/jobs/clearancejobs-keywords"),
+
+  importClearanceJobs: (params: { keyword_override?: string } = {}) => {
+    const query = new URLSearchParams();
+    if (params.keyword_override) query.set("keyword_override", params.keyword_override);
+    const suffix = query.toString() ? `?${query}` : "";
+    return apiFetch<ClearanceJobsImportResult>(`/api/jobs/import-clearancejobs${suffix}`, {
+      method: "POST",
+    });
+  },
 };
