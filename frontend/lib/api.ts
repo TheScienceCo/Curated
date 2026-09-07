@@ -15,6 +15,7 @@ import type {
   EquityAnalysis,
   JobDetail,
   RecruiterMessage,
+  ExampleCasesResponse,
   ResumeDocument,
   ResumeMatchResult,
 } from "./types";
@@ -154,6 +155,8 @@ export const api = {
 
   updateMessage: (id: string, body: { status: string; approved_response?: string | null }) =>
     apiFetch<RecruiterMessage>(`/api/messages/${id}`, { method: "PATCH", body }),
+
+  examples: () => apiFetch<ExampleCasesResponse>("/api/reference/examples"),
 
   equity: (body: {
     equity_percent: number;

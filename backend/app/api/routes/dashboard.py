@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 from collections import Counter
 from typing import Any
 
@@ -194,6 +195,29 @@ def job_families() -> dict[str, Any]:
             group: [{"value": f.value, "label": FAMILY_LABELS[f]} for f in families]
             for group, families in FAMILY_GROUPS.items()
         }
+    }
+
+
+@router.get("/reference/examples")
+def example_cases() -> dict[str, Any]:
+    """The curated demo scenarios (§21), for the Examples gallery.
+
+    Served from the same file the seeder uses, so the gallery and the seeded
+    dashboard can never disagree about what the demo set contains.
+    """
+    from app.db.seed import DATA_DIR
+
+    path = DATA_DIR / "recruiter_messages.json"
+    if not path.exists():
+        return {"examples": [], "note": "Sample dataset not found."}
+
+    examples = json.loads(path.read_text(encoding="utf-8"))
+    return {
+        "examples": examples,
+        "note": (
+            "Every company, recruiter and address below is invented. No real recruiter "
+            "correspondence is stored in this repository."
+        ),
     }
 
 

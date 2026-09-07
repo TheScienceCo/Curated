@@ -310,3 +310,49 @@ class TestReferenceAndEquity:
         body = client.get("/api/reference/skills").json()
         assert body["total"] > 50
         assert "ai" in body["categories"]
+
+
+class TestManualCorrections:
+    """The README promises extracted fields can be corrected by hand."""
+
+    @pytest.fixture
+    def job_id(self, client, candidate, fde_text) -> str:
+        return client.post("/api/jobs/analyze", json={"raw_text": fde_text}).json()["opportunity"][
+            "id"
+        ]
+
+    def test_repeated_edits_do_not_stack_the_method_suffix(self, client, job_id):
+        client.patch(f"/api/jobs/{job_id}", json={"hours": 45})
+        client.patch(f"/api/jobs/{job_id}", json={"travel": 15})
+        method = client.get(f"/api/jobs/{job_id}").json()["opportunity"]["extraction_method"]
+        assert method == "rules+manual"
+
+    def test_notes_are_not_marked_as_a_high_confidence_extraction(self, client, job_id):
+        patched = client.patch(
+            f"/api/jobs/{job_id}", json={"notes": "Referred by a former colleague."}
+        ).json()
+        assert patched["notes"] == "Referred by a former colleague."
+        assert "notes" not in patched["confidence"]
+
+    def test_correcting_the_polygraph_changes_eligibility(self, client, job_id):
+        """The workflow the correction UI exists for."""
+        before = client.get(f"/api/jobs/{job_id}").json()["score"]
+        assert before["hard_gates"] == []
+
+        client.patch(f"/api/jobs/{job_id}", json={"polygraph_requirement": "full_scope"})
+        after = client.post(f"/api/jobs/{job_id}/score").json()
+
+        assert after["hard_gates"]
+        assert after["overall_score"] < before["overall_score"]
+
+
+class TestExampleCases:
+    def test_examples_are_served_with_teaching_notes(self, client):
+        body = client.get("/api/reference/examples").json()
+        assert len(body["examples"]) >= 6
+        for example in body["examples"]:
+            assert example["title"]
+            assert example["demonstrates"]
+            assert example["expect"]
+            assert example["raw_text"]
+        assert "invented" in body["note"]

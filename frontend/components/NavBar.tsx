@@ -6,12 +6,15 @@ import { usePathname } from "next/navigation";
 const LINKS = [
   { href: "/", label: "Dashboard" },
   { href: "/analyze", label: "Analyze" },
+  { href: "/examples", label: "Examples" },
   { href: "/resumes", label: "Résumés" },
   { href: "/profile", label: "Profile" },
   { href: "/equity", label: "Equity" },
 ];
 
-export function NavBar() {
+/** `modeBadge` is rendered on the server and passed in, so the nav itself can
+ *  stay a client component without making the whole tree client-side. */
+export function NavBar({ modeBadge }: { modeBadge?: React.ReactNode }) {
   const pathname = usePathname();
 
   return (
@@ -21,6 +24,7 @@ export function NavBar() {
           Job Intelligence Agent
           <span>human-in-the-loop</span>
         </Link>
+        {modeBadge}
         <nav className="nav">
           {LINKS.map((link) => {
             const active =

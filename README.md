@@ -56,6 +56,7 @@ surface exactly that pattern.
 | **Drafts a reply** | Tone-selectable, asking for exactly what is missing — for your approval, never sent |
 | **Recommends a résumé** | Which variant to send, what to lead with, what to shorten, and which keywords to address honestly rather than insert |
 | **Models equity** | Dilution-adjusted scenarios, clearly labelled hypothetical |
+| **Corrects itself** | Every extracted field is editable; a correction is marked high-confidence and re-scores the opportunity immediately |
 | **Records decisions** | Every pursue/reject/interview/offer becomes a labelled example |
 
 ---
@@ -85,7 +86,7 @@ fields.
 
 ```bash
 make venv                     # backend virtualenv
-make test                     # 266 tests, ~5s, no database needed
+make test                     # 272 tests, ~5s, no database needed
 make demo                     # score the documented example and print it
 
 # Then, in two terminals:
@@ -182,6 +183,24 @@ at 45 with a drafted polite decline, because the role requires a Full Scope
 polygraph and the candidate holds a CI polygraph. Those are not the same
 credential, and the system will never treat them as one.
 
+### Seven cases, seven verdicts
+
+The **Examples** tab runs any of the demo scenarios through the real pipeline
+in preview mode — nothing is saved unless you ask — and shows what it concluded
+and why.
+
+![Example cases](docs/screenshots/examples.png)
+
+| Case | What it demonstrates |
+| --- | --- |
+| The documented example | Imperfect paper fit against high compensation and career capital — the pattern the tool exists to surface |
+| Great pay, hard gate | The best-paying role in the set is the one to walk away from |
+| The content-free ping | A message that says nothing: report what is absent rather than guess |
+| Low base, high equity | Why compensation and upside are separate dimensions |
+| Comfortable and stagnant | Good paper fit is not a reason to pursue |
+| Revenue-carrying technical role | Base, OTE and equity parsed as three different numbers |
+| Polygraph, scope unstated | The ambiguity that costs the most time, asked about first |
+
 ---
 
 ## The scoring philosophy
@@ -275,15 +294,20 @@ throughout.
 2. **Add your résumé variants** — Master CV, FDE, MLE, Cyber, Intelligence.
    Skills are mined from the text at save time, so you can see exactly what the
    system thinks each variant proves.
-3. **Paste a recruiter message** into `/analyze`. Analyse without saving to
-   preview, or save it to the dashboard.
+3. **Paste a recruiter message** into `/analyze` — or start from `/examples`
+   and run one of the seven demo scenarios. Analyse without saving to preview,
+   or save it to the dashboard.
 4. **Read the score breakdown.** Expand any dimension to see the reasons and
    their point contributions.
 5. **Check the prove-it analysis.** Learnable gaps come with a project and a
    time estimate; hard gates come with an explanation of why they are hard.
-6. **Review the draft.** Change the tone, regenerate, edit it, then approve —
+6. **Fix anything it read wrong.** "Correct the extraction" opens an edit form
+   over every field. Changing the polygraph from *unspecified* to *full scope*
+   takes the verdict from Strongly pursue to Low priority on save — which is
+   the point of making it editable rather than disclaiming it.
+7. **Review the draft.** Change the tone, regenerate, edit it, then approve —
    and send it yourself.
-7. **Record your decision.** Pursue, reject, interviewed, offer, accepted. Each
+8. **Record your decision.** Pursue, reject, interviewed, offer, accepted. Each
    one is stored as feedback.
 
 ![Analyze](docs/screenshots/analyze.png)
@@ -311,7 +335,7 @@ No secrets are committed. `.env` is git-ignored; only `.env.example` is tracked.
 ## Tests
 
 ```bash
-make test        # 266 tests
+make test        # 272 tests
 make coverage    # with a coverage report
 make lint        # ruff + tsc + eslint
 ```
@@ -326,7 +350,7 @@ the parts where being wrong is expensive:
 | `test_extraction.py` | Salary/equity/travel/hours/YOE parsing, alias normalisation, mining false-positives, LLM-merge precedence |
 | `test_scoring.py` | Each dimension's behaviour, hard-gate capping, weight configurability, score bounds, and the product thesis |
 | `test_missing_info_and_drafts.py` | Priority ordering, every draft intent and tone, and the polish guardrail |
-| `test_api.py` | Every endpoint, error shape, and the sign-off-survives-regeneration rule |
+| `test_api.py` | Every endpoint, error shape, the sign-off-survives-regeneration rule, and that a corrected polygraph changes the verdict |
 | `test_acceptance.py` | The documented example, end to end through the API |
 | `test_seed.py` | The demo dataset still demonstrates what this README claims |
 
@@ -353,8 +377,8 @@ contact details are in this repository.**
   assumption lives.
 * **Extraction is best-effort on unusual formats.** A message with no title
   phrasing the parser recognises will show "Untitled opportunity" — visible in
-  the demo data, and correct behaviour: the fields are editable, and manual
-  corrections are marked high-confidence.
+  the demo data. Every extracted field is editable from the detail page;
+  corrections are marked high-confidence and re-score the opportunity on save.
 * **Career capital and upside encode opinions.** The family and stage tables in
   `career_capital.py` and `upside.py` reflect a view of the 2026 market. They
   are readable and editable; they are not objective.
@@ -416,10 +440,12 @@ backend/
     cli.py          `python -m app.cli demo`
   tests/            266 tests
 frontend/
-  app/              dashboard · analyze · opportunities/[id] · profile
-                    resumes · equity
-  components/       tables, score bars, prove-it, draft panel, decisions
+  app/              dashboard · analyze · examples · opportunities/[id]
+                    profile · resumes · equity · loading/error/404 states
+  components/       tables, filters, score bars, prove-it, draft panel,
+                    correction form, equity scenarios, decisions
   lib/              typed API client · wire types · formatting
+  scripts/          screenshots.mjs (regenerates the images in this README)
 data/samples/       fictional demo dataset
 docs/               architecture.md · screenshots
 ```

@@ -44,6 +44,10 @@ router = APIRouter(prefix="/api/jobs", tags=["jobs"])
 #: Statuses that represent a human sign-off, which regeneration must not undo.
 _SIGNED_OFF = frozenset({MessageStatus.APPROVED.value, MessageStatus.EDITED.value})
 
+#: Editable fields that were never extracted from the source text, so marking
+#: them "high confidence" would be meaningless.
+_NON_EXTRACTED_FIELDS = frozenset({"notes"})
+
 
 def _get_job(db: Session, job_id: str) -> JobOpportunity:
     job = db.get(JobOpportunity, job_id)
@@ -219,11 +223,11 @@ def update_job(
     confidence = dict(job.confidence or {})
     for key, value in updates.items():
         setattr(job, key, value.value if hasattr(value, "value") else value)
-        confidence[key] = "high"
+        if key not in _NON_EXTRACTED_FIELDS:
+            confidence[key] = "high"
     job.confidence = confidence
-    job.extraction_method = (
-        "manual" if job.extraction_method == "manual" else f"{job.extraction_method}+manual"
-    )
+    if not job.extraction_method.endswith("+manual"):
+        job.extraction_method = f"{job.extraction_method}+manual"
     db.commit()
     db.refresh(job)
     return job

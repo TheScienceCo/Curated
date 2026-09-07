@@ -181,6 +181,8 @@ class JobOpportunity(Base):
     confidence: Mapped[dict] = mapped_column(JsonType, default=dict)
     #: Which pipeline produced this record: "rules", "llm", or "llm+rules".
     extraction_method: Mapped[str] = mapped_column(String(30), default="rules")
+    #: Free-form user notes shown on the detail page.
+    notes: Mapped[str | None] = mapped_column(Text, default=None)
 
     created_at: Mapped[datetime] = mapped_column(UtcDateTime, default=utcnow)
     updated_at: Mapped[datetime] = mapped_column(UtcDateTime, default=utcnow, onupdate=utcnow)

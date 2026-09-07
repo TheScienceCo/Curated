@@ -4,7 +4,9 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { api, ApiError } from "@/lib/api";
+import { CorrectionPanel } from "@/components/CorrectionPanel";
 import { DecisionPanel } from "@/components/DecisionPanel";
+import { EquityScenarios } from "@/components/EquityScenarios";
 import { DraftPanel } from "@/components/DraftPanel";
 import { MissingInfo } from "@/components/MissingInfo";
 import { ProveIt } from "@/components/ProveIt";
@@ -92,6 +94,13 @@ export function OpportunityDetail({
       </div>
 
       {error && <div className="banner banner-error">{error}</div>}
+
+      {opportunity.notes && (
+        <div className="card" style={{ marginBottom: "1rem" }}>
+          <h3>Your notes</h3>
+          <p style={{ marginBottom: 0, whiteSpace: "pre-wrap" }}>{opportunity.notes}</p>
+        </div>
+      )}
 
       {score?.explanation.overall_capped_by_hard_gate && (
         <div className="banner banner-warn">
@@ -246,6 +255,8 @@ export function OpportunityDetail({
               <div className="jd">{opportunity.job_description ?? "No source text."}</div>
             </details>
           </div>
+
+          <CorrectionPanel job={opportunity} />
         </div>
 
         <div className="stack" style={{ gap: "1rem" }}>
@@ -310,6 +321,8 @@ export function OpportunityDetail({
               </details>
             </div>
           )}
+
+          <EquityScenarios job={opportunity} />
 
           <DecisionPanel opportunityId={opportunity.id} decisions={decisions} />
         </div>

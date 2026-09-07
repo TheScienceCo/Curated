@@ -199,6 +199,7 @@ class JobOpportunityRead(BaseModel):
     extracted_at: datetime
     confidence: dict[str, Any]
     extraction_method: str
+    notes: str | None
     created_at: datetime
     updated_at: datetime
 
@@ -255,6 +256,7 @@ class JobOpportunityUpdate(BaseModel):
     source_url: str | None = None
     recruiter_name: str | None = None
     recruiter_contact: str | None = None
+    notes: str | None = None
 
 
 class JobCreate(BaseModel):

@@ -27,8 +27,8 @@ That property is what makes the test suite fast, free and deterministic.
 │  Browser                                                                   │
 │  ┌──────────────────────────────────────────────────────────────────────┐  │
 │  │  Next.js (App Router, TypeScript)                                    │  │
-│  │  /  dashboard    /analyze    /opportunities/[id]                     │  │
-│  │  /profile        /resumes    /equity                                 │  │
+│  │  /  dashboard   /analyze   /examples   /opportunities/[id]           │  │
+│  │  /profile       /resumes   /equity                                   │  │
 │  │  Server components fetch on the server; interactive panels are        │  │
 │  │  client components that call the API directly.                        │  │
 │  └───────────────────────────────┬──────────────────────────────────────┘  │
@@ -113,6 +113,27 @@ subtracted from it, because a high-risk, high-upside role is a legitimate
 choice — but only if you can see that you are making it. `risk_penalty_weight`
 lets a user opt into subtraction.
 
+## Route structure
+
+The dashboard lives in a `(dashboard)` route group rather than at `app/page.tsx`.
+Route groups do not affect the URL — it still serves `/` — and the reason is
+narrow but real: a `loading.tsx` at the app root creates a Suspense boundary
+above *every* nested route, which commits a `200` before `notFound()` on
+`/opportunities/[id]` can set a `404`. Scoping the skeleton to the group keeps
+both the loading state and the correct status code.
+
+## Correcting an extraction
+
+Extraction is best-effort, and the honest response to that is an edit form
+rather than a disclaimer. `PATCH /api/jobs/{id}` accepts any extracted field;
+the route marks each corrected field `high` confidence (a human typed it) and
+appends `+manual` to `extraction_method` — once, not per edit. The UI re-scores
+immediately on save, so correcting a polygraph from *unspecified* to *full
+scope* visibly moves the verdict.
+
+`notes` is excluded from the confidence map: it was never extracted, so calling
+it a high-confidence extraction would be meaningless.
+
 ## Data model notes
 
 * **IDs are string UUIDs.** The same DDL runs on Postgres and on the SQLite
@@ -154,3 +175,4 @@ v1 rather than left as a disabled feature.
 | Embeddings unavailable | Résumé matching falls back to keyword/ontology overlap |
 | Malformed `scoring_config` | Rejected at the API boundary; defaults used with a warning |
 | A sample fails to seed | Logged; the remaining samples still load |
+| API unreachable from the UI | `error.tsx` names the likely cause and offers a retry; the nav badge reads "API offline" |

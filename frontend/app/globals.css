@@ -411,3 +411,94 @@ details.disclosure { border-top: 1px solid var(--border); padding-top: 0.6rem; m
 details.disclosure summary { cursor: pointer; font-size: 0.85rem; font-weight: 560; color: var(--text-muted); }
 details.disclosure summary:hover { color: var(--text); }
 details.disclosure[open] summary { margin-bottom: 0.5rem; }
+
+/* --- Dashboard filters --------------------------------------------------- */
+.filters {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.8rem;
+}
+
+.chip {
+  font: inherit;
+  font-size: 0.79rem;
+  font-weight: 540;
+  padding: 0.22rem 0.6rem;
+  border-radius: 999px;
+  border: 1px solid var(--border-strong);
+  background: var(--surface);
+  color: var(--text-muted);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.chip:hover { background: var(--surface-alt); color: var(--text); }
+
+.chip-active {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.chip-count {
+  font-variant-numeric: tabular-nums;
+  opacity: 0.65;
+  font-size: 0.74rem;
+}
+
+.toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.82rem;
+  font-weight: 400;
+  color: var(--text-muted);
+  margin: 0;
+  cursor: pointer;
+}
+
+.toggle input { width: auto; }
+
+/* --- Loading skeletons --------------------------------------------------- */
+.skeleton {
+  border-radius: var(--radius-sm);
+  background: linear-gradient(
+    90deg,
+    var(--surface-alt) 25%,
+    var(--border) 50%,
+    var(--surface-alt) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.4s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  from { background-position: 200% 0; }
+  to   { background-position: -200% 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skeleton { animation: none; }
+}
+
+/* --- Pipeline mode badge ------------------------------------------------- */
+.mode-badge {
+  font-size: 0.72rem;
+  font-weight: 560;
+  padding: 0.12rem 0.5rem;
+  border-radius: 999px;
+  border: 1px solid var(--border-strong);
+  color: var(--text-muted);
+  background: var(--surface-alt);
+  white-space: nowrap;
+}
+
+.mode-badge-llm {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: var(--accent-soft);
+}

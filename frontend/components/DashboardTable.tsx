@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useMemo, useState } from "react";
 import { ScoreChip } from "@/components/Score";
 import { ACTION_LABELS, ACTION_TONE, formatSalary, titleCase } from "@/lib/format";
-import type { DashboardRow } from "@/lib/types";
+import type { DashboardRow, RecommendedAction } from "@/lib/types";
 
 type SortKey =
   | "overall_score"
@@ -31,12 +31,37 @@ const COLUMNS: { key: SortKey; label: string; numeric: boolean; inverted?: boole
   { key: "risk_score", label: "Risk", numeric: true, inverted: true },
 ];
 
+/** Filtering happens client-side: this is one person's inbox, not a warehouse,
+ *  and a round trip per filter change would be slower than it is worth. */
+const ACTION_ORDER: RecommendedAction[] = [
+  "STRONGLY_PURSUE",
+  "PURSUE",
+  "WORTH_A_CALL",
+  "MAYBE",
+  "LOW_PRIORITY",
+  "REJECT",
+];
+
 export function DashboardTable({ rows }: { rows: DashboardRow[] }) {
   const [sortKey, setSortKey] = useState<SortKey>("overall_score");
   const [descending, setDescending] = useState(true);
+  const [action, setAction] = useState<RecommendedAction | "all">("all");
+  const [hideDecided, setHideDecided] = useState(false);
+  const [hideGated, setHideGated] = useState(false);
+
+  const filtered = useMemo(
+    () =>
+      rows.filter((row) => {
+        if (action !== "all" && row.recommended_action !== action) return false;
+        if (hideDecided && (row.decision === "reject" || row.decision === "ignore")) return false;
+        if (hideGated && row.hard_gate_count > 0) return false;
+        return true;
+      }),
+    [rows, action, hideDecided, hideGated],
+  );
 
   const sorted = useMemo(() => {
-    const copy = [...rows];
+    const copy = [...filtered];
     copy.sort((a, b) => {
       const left = sortValue(a, sortKey);
       const right = sortValue(b, sortKey);
@@ -46,7 +71,7 @@ export function DashboardTable({ rows }: { rows: DashboardRow[] }) {
       return left - right;
     });
     return descending ? copy.reverse() : copy;
-  }, [rows, sortKey, descending]);
+  }, [filtered, sortKey, descending]);
 
   function toggle(key: SortKey) {
     if (key === sortKey) {
@@ -57,7 +82,61 @@ export function DashboardTable({ rows }: { rows: DashboardRow[] }) {
     }
   }
 
+  const counts = useMemo(() => {
+    const map = new Map<string, number>();
+    for (const row of rows) {
+      map.set(row.recommended_action, (map.get(row.recommended_action) ?? 0) + 1);
+    }
+    return map;
+  }, [rows]);
+
   return (
+    <>
+      <div className="filters">
+        <div className="row" style={{ gap: "0.3rem" }}>
+          <button
+            type="button"
+            className={`chip ${action === "all" ? "chip-active" : ""}`}
+            onClick={() => setAction("all")}
+          >
+            All <span className="chip-count">{rows.length}</span>
+          </button>
+          {ACTION_ORDER.filter((value) => counts.has(value)).map((value) => (
+            <button
+              key={value}
+              type="button"
+              className={`chip ${action === value ? "chip-active" : ""}`}
+              onClick={() => setAction(action === value ? "all" : value)}
+            >
+              {ACTION_LABELS[value]} <span className="chip-count">{counts.get(value)}</span>
+            </button>
+          ))}
+        </div>
+        <div className="row" style={{ gap: "0.9rem", marginLeft: "auto" }}>
+          <label className="toggle">
+            <input
+              type="checkbox"
+              checked={hideGated}
+              onChange={(event) => setHideGated(event.target.checked)}
+            />
+            Hide hard-gated
+          </label>
+          <label className="toggle">
+            <input
+              type="checkbox"
+              checked={hideDecided}
+              onChange={(event) => setHideDecided(event.target.checked)}
+            />
+            Hide rejected
+          </label>
+        </div>
+      </div>
+
+      {sorted.length === 0 ? (
+        <div className="card">
+          <div className="empty">No opportunities match these filters.</div>
+        </div>
+      ) : (
     <div className="card" style={{ padding: 0, overflow: "hidden" }}>
       <div className="table-wrap">
         <table>
@@ -123,6 +202,8 @@ export function DashboardTable({ rows }: { rows: DashboardRow[] }) {
         </table>
       </div>
     </div>
+      )}
+    </>
   );
 }
 

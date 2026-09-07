@@ -158,10 +158,28 @@ export interface JobOpportunity {
   extracted_at: string;
   confidence: Record<string, string>;
   extraction_method: string;
+  notes: string | null;
   created_at: string;
   updated_at: string;
   /** slug -> display label, supplied by the backend ontology. */
   skill_labels: Record<string, string>;
+}
+
+/** One curated demo scenario from data/samples. */
+export interface ExampleCase {
+  id: string;
+  title: string;
+  channel: string;
+  /** What this case is here to show. */
+  demonstrates: string;
+  /** The outcome the system is expected to reach. */
+  expect: string;
+  raw_text: string;
+}
+
+export interface ExampleCasesResponse {
+  examples: ExampleCase[];
+  note: string;
 }
 
 export interface MissingField {
