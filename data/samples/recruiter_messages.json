@@ -1,0 +1,44 @@
+[
+  {
+    "id": "sample-fde-nightingale",
+    "channel": "email",
+    "note": "The MVP acceptance-test example from the spec (§19). Fictional company.",
+    "raw_text": "Hi Eric,\n\nI'm recruiting for a Forward Deployed Engineer at Nightingale Systems supporting national security customers. The role requires TS/SCI and experience with Python, React, TypeScript, LLMs, and customer-facing technical delivery. Salary is $190k-$240k plus equity. Position is onsite in San Francisco with approximately 20% travel. We're looking for 3-5 years full-stack engineering experience.\n\nBest,\nDana Whitfield\ndana.whitfield@nightingale-systems.example"
+  },
+  {
+    "id": "sample-fsp-hardgate",
+    "channel": "linkedin",
+    "note": "Excellent role blocked by a Full Scope Polygraph the candidate does not hold. Demonstrates that a CI poly is never treated as sufficient.",
+    "raw_text": "Eric - I'm hiring a Senior Cleared Software Engineer at Meridian Defense Labs. Active TS/SCI with a full scope polygraph is required on day one; we cannot sponsor the upgrade. Stack is Python, C++, Kubernetes and cloud architecture. Compensation is $215,000 - $265,000 with a 15% annual bonus. Onsite in Annapolis Junction, MD, 40 hours per week, no travel.\n\n- Priya Raghunathan"
+  },
+  {
+    "id": "sample-vague-recruiter",
+    "channel": "linkedin",
+    "note": "The classic content-free recruiter ping. Should trigger the missing-information draft.",
+    "raw_text": "Hi Eric! I came across your profile and I think you'd be a great fit for an exciting opportunity with a fast-growing company in the AI space. Competitive compensation and great benefits. Are you free for a quick 15-minute chat this week?\n\nThanks,\nBrett"
+  },
+  {
+    "id": "sample-founding-engineer",
+    "channel": "email",
+    "note": "Low base, high equity, seed stage. Exercises the compensation-vs-upside split.",
+    "raw_text": "Subject: Founding Engineer at Halcyon Bio\n\nHi Eric,\n\nWe're a seed-stage company applying machine learning to drug discovery. We just closed our seed round. Team of 9 people.\n\nWe're looking for a founding engineer to own our entire platform end-to-end - greenfield, high ambiguity, zero to one. You'd work across Python, PyTorch, computational biology pipelines and cloud infrastructure, and you'd be talking to our pharma customers directly.\n\nBase is $150,000 with 0.8% - 1.2% equity. Fully remote. Expect roughly 50 hours per week; we're honest about that. No clearance required.\n\nBest,\nSofia Almeida\nsofia@halcyonbio.example"
+  },
+  {
+    "id": "sample-lowball-contract",
+    "channel": "job_board",
+    "note": "Below the candidate's floor with poor career capital. Should produce a polite decline.",
+    "raw_text": "Job Title: Intelligence Analyst III\nCompany: Beacon Ridge Consulting\nLocation: Chantilly, VA\n\nResponsibilities: Provide all-source intelligence analysis and reporting support to a government customer. This is a level of effort contract supporting an existing program. Maintain existing analytic products and respond to customer RFIs via the ticket queue. Shift work may be required on the watch floor.\n\nRequirements: Active TS/SCI with CI polygraph. Bachelor's degree in a relevant field. 5+ years of all-source intelligence experience.\n\nSalary: $105,000 - $125,000. No equity.\nTravel: no travel.\nSchedule: 40 hours per week."
+  },
+  {
+    "id": "sample-gtm-engineer",
+    "channel": "email",
+    "note": "Revenue-carrying technical role with OTE. Exercises the upside and revenue paths.",
+    "raw_text": "Hi Eric,\n\nWe're hiring a Forward Deployed AI Engineer at Cassini Labs (Series B, ~140 employees). You'd be embedded with enterprise customers deploying our agentic AI platform - building RAG pipelines, evaluation harnesses and custom integrations in Python and TypeScript, then owning the outcome with the customer.\n\nBase $200,000-$235,000, OTE $280,000 with commission, plus equity (0.05%-0.1%). Hybrid in New York, NY - 3 days per week in office. Expect up to 30% travel to customer sites. No clearance required.\n\nInterested?\n\nMarcus Oyelaran\nmarcus@cassinilabs.example"
+  },
+  {
+    "id": "sample-ambiguous-poly",
+    "channel": "email",
+    "note": "Polygraph required but scope unstated - the exact ambiguity the clearance clarification draft exists for.",
+    "raw_text": "Eric,\n\nOpening for an AI Mission Engineer supporting a classified customer. Requires an active TS/SCI and a polygraph. Work involves LLMs, RAG, agents and Python against real mission data. Onsite in Reston, VA.\n\nHappy to share more on a call.\n\nRegards,\nTanya Kobayashi"
+  }
+]

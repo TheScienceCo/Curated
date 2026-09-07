@@ -1,0 +1,86 @@
+{
+  "name": "Eric Espland",
+  "summary": "Technically capable generalist moving from intelligence and scientific work into AI/ML and forward-deployed engineering. Builds and ships production systems; comfortable with ambiguity and direct customer contact.",
+  "current_location": "Washington, DC",
+  "citizenship": "US citizen",
+  "work_authorization": "US citizen - no sponsorship required",
+  "clearance_level": "ts_sci",
+  "polygraph_type": "ci",
+  "languages": ["English", "Mandarin"],
+  "education": ["BS, Biochemistry"],
+  "certifications": ["Security+"],
+  "technical_skills": [
+    "Python", "SQL", "FastAPI", "APIs", "Docker", "Git", "CI/CD",
+    "LLMs", "RAG", "embeddings", "vector databases", "prompt engineering",
+    "agents", "tool calling", "evaluation", "human-in-the-loop", "cloud"
+  ],
+  "domain_skills": [
+    "HUMINT", "OSINT", "all-source intelligence", "targeting", "link analysis",
+    "threat intelligence", "biochemistry", "molecular biology", "customer-facing"
+  ],
+  "years_experience_by_skill": {
+    "python": 6,
+    "llms": 3,
+    "rag": 2,
+    "agents": 2,
+    "fastapi": 2,
+    "sql": 5,
+    "humint": 8,
+    "all_source": 8,
+    "osint": 6,
+    "customer_facing": 8,
+    "biochemistry": 4,
+    "mandarin": 6
+  },
+  "proofable_skills": [
+    "react", "typescript", "nextjs", "cpp", "kubernetes", "ghidra",
+    "reverse_engineering", "pytorch", "terraform", "go"
+  ],
+  "target_roles": [
+    "forward_deployed_engineer", "ai_engineer", "ml_engineer",
+    "member_of_technical_staff", "solutions_engineer", "ai_mission_engineer",
+    "ai_security_engineer", "founders_office", "chief_of_staff"
+  ],
+  "preferred_locations": ["Washington, DC", "Arlington", "Remote", "New York"],
+  "remote_preference": "hybrid_ok",
+  "willingness_to_travel": 30,
+  "minimum_salary": 170000,
+  "target_salary": 220000,
+  "desired_equity": "Meaningful equity at early stage; percentage and valuation disclosed",
+  "preferred_weekly_hours": 45,
+  "lifestyle_preferences": {
+    "no_shift_work": true,
+    "max_commute_minutes": 45,
+    "prefers_deep_work_blocks": true
+  },
+  "industries_of_interest": [
+    "national security", "ai", "cybersecurity", "biotech", "defense technology"
+  ],
+  "industries_to_avoid": ["adtech", "gambling"],
+  "career_goals": [
+    "forward deployed engineer",
+    "agentic AI systems",
+    "customer-facing technical ownership",
+    "path toward founding or executive scope",
+    "$300k+ total compensation within 24 months"
+  ],
+  "risk_tolerance": "high",
+  "notes": "Holds TS/SCI with CI polygraph. Does NOT hold a Full Scope / Expanded Scope polygraph - never assume the CI poly satisfies an FSP requirement.",
+  "scoring_config": {
+    "compensation_bands": {
+      "poor": 120000,
+      "acceptable": 150000,
+      "strong": 200000,
+      "excellent": 250000
+    },
+    "weights": {
+      "fit": 0.20,
+      "career_capital": 0.25,
+      "proofability": 0.15,
+      "compensation": 0.20,
+      "lifestyle": 0.10,
+      "upside": 0.10
+    },
+    "risk_penalty_weight": 0.0
+  }
+}

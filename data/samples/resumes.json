@@ -1,0 +1,32 @@
+[
+  {
+    "title": "Master CV",
+    "target_families": [],
+    "active": true,
+    "raw_text": "ERIC ESPLAND - MASTER CV\n\nSUMMARY\nGeneralist technologist with intelligence, scientific and software engineering experience. TS/SCI with CI polygraph.\n\nENGINEERING\nPython, SQL, FastAPI, REST API design, Docker, Git, CI/CD, cloud architecture. Built and deployed internal tooling used daily by analysts.\n\nAI\nLLMs, RAG, embeddings, vector databases, prompt engineering, agents, tool calling, evaluation, human-in-the-loop review workflows. Built a grounded retrieval system over a classified corpus with measured citation accuracy.\n\nINTELLIGENCE\nHUMINT, OSINT, all-source intelligence, targeting, link analysis, reporting. Mandarin language capability. Eight years of direct customer and partner engagement.\n\nSCIENCE\nBiochemistry, molecular biology, stem cells, tissue engineering, LC-MS, analytical chemistry. Wet-lab research background.\n\nEDUCATION\nBS, Biochemistry. Security+ certification.\n"
+  },
+  {
+    "title": "Forward Deployed AI Resume",
+    "target_families": ["forward_deployed_engineer", "ai_mission_engineer", "solutions_engineer"],
+    "active": true,
+    "raw_text": "ERIC ESPLAND - FORWARD DEPLOYED AI ENGINEER\n\nTS/SCI with CI polygraph. US citizen.\n\nBuilds and deploys agentic AI systems directly with government and enterprise customers. Comfortable owning ambiguous problems end to end in the customer's environment.\n\nSELECTED WORK\n- Built a retrieval-augmented (RAG) assistant over a domain corpus: FastAPI backend, embeddings and a vector database, evaluation harness measuring citation accuracy, human-in-the-loop approval before any output was actioned.\n- Designed and shipped agentic workflows with tool calling and structured outputs; owned the deployment and the customer relationship through rollout.\n- Python throughout; API design, Docker, CI/CD and cloud deployment.\n\nCUSTOMER-FACING DELIVERY\nEight years working directly with demanding government customers under ambiguity: requirements elicitation, on-site delivery, briefing senior stakeholders, and owning outcomes rather than tickets.\n\nMISSION BACKGROUND\nHUMINT, OSINT, all-source intelligence and targeting. Mandarin. Understands government workflows, classification handling and mission tempo.\n\nEDUCATION\nBS, Biochemistry. Security+.\n"
+  },
+  {
+    "title": "MLE Resume",
+    "target_families": ["ml_engineer", "ai_engineer", "research_engineer", "scientific_ml_engineer"],
+    "active": true,
+    "raw_text": "ERIC ESPLAND - MACHINE LEARNING ENGINEER\n\nMachine learning engineer focused on LLM systems and evaluation.\n\n- LLMs, RAG, embeddings, vector databases, fine-tuning, agents, tool calling.\n- PyTorch and scikit-learn for modelling; evaluation harnesses and offline eval sets with regression tracking.\n- Python, SQL, FastAPI, Docker, CI/CD, cloud architecture, MLOps.\n- Scientific background in biochemistry and molecular biology; comfortable with computational biology data.\n\nTS/SCI with CI polygraph. BS Biochemistry.\n"
+  },
+  {
+    "title": "Cyber / Reverse Engineering Resume",
+    "target_families": ["malware_reverse_engineer", "vulnerability_researcher", "ai_security_engineer", "cyber_threat_intelligence"],
+    "active": true,
+    "raw_text": "ERIC ESPLAND - CYBER\n\nTS/SCI with CI polygraph.\n\n- Threat intelligence, OSINT, MITRE ATT&CK, YARA rule development, packet analysis.\n- Working knowledge of malware analysis and reverse engineering workflows; building depth in Ghidra and x86/x64.\n- Python tooling for analyst workflows; automation of triage and enrichment.\n- AI security interest: prompt injection and red-teaming LLM applications.\n\nBS Biochemistry. Security+.\n"
+  },
+  {
+    "title": "Intelligence / Science Resume",
+    "target_families": ["technical_intelligence_analyst", "biosecurity_scientist", "computational_biology_ml"],
+    "active": true,
+    "raw_text": "ERIC ESPLAND - INTELLIGENCE AND SCIENCE\n\nTS/SCI with CI polygraph. Mandarin.\n\nINTELLIGENCE\nHUMINT, OSINT, DOCEX, all-source intelligence, targeting, link analysis, source operations and reporting. Eight years supporting national security customers.\n\nSCIENCE\nBiochemistry, molecular biology, stem cells, tissue engineering, peptide chemistry, analytical chemistry, LC-MS and GC-MS. Wet-lab research and biomedical engineering exposure.\n\nTECHNICAL\nPython, SQL, data analysis. Applying LLMs and RAG to scientific and intelligence corpora.\n\nEDUCATION\nBS, Biochemistry.\n"
+  }
+]
