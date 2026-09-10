@@ -18,6 +18,8 @@ from app.llm.base import LlmProvider
 from app.schemas.api import (
     AnalyzeRequest,
     AnalyzeResponse,
+    BulkImportRequest,
+    BulkImportResponse,
     ClearanceJobsImportResponse,
     ClearanceJobsKeywordsResponse,
     DraftRequest,
@@ -36,6 +38,7 @@ from app.services.analysis import (
     get_active_candidate,
     persist_score,
 )
+from app.services.bulk_import import import_raw_jobs
 from app.services.clearancejobs_scraper import (
     generate_keywords,
     scrape_clearancejobs,
@@ -392,3 +395,20 @@ def import_clearancejobs(
     except ExternalServiceError as e:
         logger.error(f"ClearanceJobs import failed: {e}")
         raise HTTPException(status_code=502, detail=str(e)) from e
+
+
+@router.post("/bulk-import", response_model=BulkImportResponse)
+def bulk_import_jobs(
+    payload: BulkImportRequest,
+    candidate_id: str | None = Query(default=None),
+    db: Session = Depends(db_session),
+) -> BulkImportResponse:
+    """Bulk import raw job text (email, posting, etc.)."""
+    candidate = get_active_candidate(db, candidate_id)
+
+    if not payload.jobs:
+        raise HTTPException(status_code=400, detail="No jobs provided")
+
+    stats = import_raw_jobs(db, candidate.id, payload.jobs)
+    logger.info(f"Bulk import complete: {stats}")
+    return BulkImportResponse(**stats)

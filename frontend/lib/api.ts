@@ -8,6 +8,7 @@
 
 import type {
   AnalyzeResponse,
+  BulkImportResult,
   CandidateProfile,
   ClearanceJobsImportResult,
   ClearanceJobsKeywords,
@@ -178,4 +179,10 @@ export const api = {
       method: "POST",
     });
   },
+
+  bulkImport: (jobs: string[]) =>
+    apiFetch<BulkImportResult>("/api/jobs/bulk-import", {
+      method: "POST",
+      body: { jobs },
+    }),
 };

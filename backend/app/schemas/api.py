@@ -459,4 +459,18 @@ class ClearanceJobsImportResponse(BaseModel):
     total_results: int
 
 
+class BulkImportRequest(BaseModel):
+    """Bulk import of raw job text."""
+    jobs: list[str] = Field(description="List of raw job descriptions to import")
+
+
+class BulkImportResponse(BaseModel):
+    """Results from bulk import."""
+    saved: int
+    below_threshold: int
+    duplicates_skipped: int
+    failed: int
+    total_processed: int
+
+
 __all__ = [name for name in dir() if name[0].isupper()]

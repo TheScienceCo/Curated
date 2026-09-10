@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { DashboardTable } from "@/components/DashboardTable";
 import { ClearanceJobsModal } from "@/components/ClearanceJobsModal";
+import { BulkImportModal } from "@/components/BulkImportModal";
 import type { DashboardRow, CandidateProfile } from "@/lib/types";
 
 interface DashboardClientProps {
@@ -19,7 +20,8 @@ interface DashboardClientProps {
 }
 
 export function DashboardClient({ rows, stats, candidate }: DashboardClientProps) {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isClearanceJobsOpen, setIsClearanceJobsOpen] = useState(false);
+  const [isBulkImportOpen, setIsBulkImportOpen] = useState(false);
 
   return (
     <>
@@ -43,32 +45,48 @@ export function DashboardClient({ rows, stats, candidate }: DashboardClientProps
 
       <div style={{ marginBottom: "1.5rem", display: "flex", gap: "0.5rem" }}>
         {stats.count > 0 && (
-          <button
-            className="btn btn-secondary"
-            onClick={() => setIsModalOpen(true)}
-            style={{ padding: "0.45rem 0.95rem" }}
-          >
-            + Import ClearanceJobs
-          </button>
+          <>
+            <button
+              className="btn btn-secondary"
+              onClick={() => setIsBulkImportOpen(true)}
+              style={{ padding: "0.45rem 0.95rem" }}
+            >
+              + Bulk import
+            </button>
+            <button
+              className="btn btn-secondary"
+              onClick={() => setIsClearanceJobsOpen(true)}
+              style={{ padding: "0.45rem 0.95rem" }}
+            >
+              + ClearanceJobs
+            </button>
+          </>
         )}
         {stats.count === 0 && (
           <div className="card">
             <div className="empty">
               <p>No opportunities yet.</p>
-              <div style={{ display: "flex", gap: "0.5rem", marginTop: "1rem" }}>
+              <div style={{ display: "flex", gap: "0.5rem", marginTop: "1rem", flexWrap: "wrap" }}>
                 <Link
                   href="/analyze"
                   className="btn btn-primary"
                   style={{ padding: "0.45rem 0.95rem" }}
                 >
-                  Analyze your first recruiter message →
+                  Analyze message →
                 </Link>
                 <button
                   className="btn btn-secondary"
-                  onClick={() => setIsModalOpen(true)}
+                  onClick={() => setIsBulkImportOpen(true)}
                   style={{ padding: "0.45rem 0.95rem" }}
                 >
-                  + Import ClearanceJobs
+                  + Bulk import
+                </button>
+                <button
+                  className="btn btn-secondary"
+                  onClick={() => setIsClearanceJobsOpen(true)}
+                  style={{ padding: "0.45rem 0.95rem" }}
+                >
+                  + ClearanceJobs
                 </button>
               </div>
             </div>
@@ -78,7 +96,8 @@ export function DashboardClient({ rows, stats, candidate }: DashboardClientProps
 
       {rows.length > 0 && <DashboardTable rows={rows} />}
 
-      <ClearanceJobsModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} candidate={candidate} />
+      <ClearanceJobsModal isOpen={isClearanceJobsOpen} onClose={() => setIsClearanceJobsOpen(false)} candidate={candidate} />
+      <BulkImportModal isOpen={isBulkImportOpen} onClose={() => setIsBulkImportOpen(false)} />
     </>
   );
 }

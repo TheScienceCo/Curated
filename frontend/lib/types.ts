@@ -376,3 +376,11 @@ export interface ClearanceJobsImportResult {
   duplicates_skipped: number;
   total_results: number;
 }
+
+export interface BulkImportResult {
+  saved: number;
+  below_threshold: number;
+  duplicates_skipped: number;
+  failed: number;
+  total_processed: number;
+}
